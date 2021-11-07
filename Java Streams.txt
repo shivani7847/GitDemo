@@ -1,0 +1,61 @@
+Java Streams, Lambda Expressions:
+
+
+
+Working of stream:
+
+1. Create a stream.
+
+2. Perform intermediate operations on the initial stream to transform it into another stream and so on further intermediate
+operations. (We are performing a filter operation to create another stream that starts with A).
+
+
+3. Perform termial opertion on the final stream to get the result. Count is the termial operation. STream doesnt affect the original arrray list. 
+
+         name.stream().filter(s->s.startsWith("A")).count();
+
+
+Simple Java program to print number of strings that starts with A:
+
+public class Frames {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		
+		
+          ArrayList<String> name = new ArrayList<String> ();
+          name.add("Abhishek");
+          name.add("sonam");
+          name.add("Don");
+          name.add("Akshara");
+        int  count=0;
+          
+          for (int i = 0; i<name.size();i++)
+          {
+        	  String value = name.get(i);
+        	  if(value.startsWith("A")) {
+        		  
+        		  count++;
+        	  }
+          }
+System.out.println(count);
+}
+}
+
+
+Same Program using stream
+
+	public void streamFilter() {
+	
+		 ArrayList<String> name = new ArrayList<String> ();
+         name.add("Abhishek");
+         name.add("sonam");
+         name.add("Don");
+         name.add("Akshara");
+      ///Using Streams, It contains stream of array data
+         //Lambda expression - 2parts-Ledt side gives parameter and right side is what action needs to be performed in parameter
+         //Streams can scan all elements parallely
+         
+       Long count=  name.stream().filter(s->s.startsWith("A")).count();
+       System.out.println(count);
+	
