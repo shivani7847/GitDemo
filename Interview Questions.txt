@@ -1,0 +1,155 @@
+Interview Prep:
+
+Ques1: How to find number of links present in a webpage:
+
+List links = driver.findElements(By.tagName("a"));
+System.out.println(links.size());
+or
+System.out.println(driver.findElements(By.tagName("a")));
+
+Ques2: Get the count of links present in footer section.
+
+Limit the webdriver scope to only footer sections:
+Create a subset of main driver 
+
+WebElement footerDiver=driver.findElement(By.cssSelector(".footer_top_agile_w3ls.gffoot.footer_style"));
+System.out.println(footerDiver.findElements(By.tagName("a")).size());
+
+
+Ques3: Get number of links present in first column only in footer column:
+You have driver till complete footer so select xpath for that column and get sizeWebElement 
+
+columnDriver=footerDiver.findElement(By.xpath("//table/tbody/tr/td[2]/ul"));
+System.out.println(columnDriver.findElements(By.tagName("a")).size());
+
+
+Ques: Check if all the links are working by clicking on each link and check if pages are opening. This code is independent of link names.
+
+Ans: 	
+		WebElement columnDriver=footerDiver.findElement(By.xpath("//table/tbody/tr/td[1]/ul"));
+		System.out.println(columnDriver.findElements(By.tagName("a")).size());
+		
+		for(int i=1; i<columnDriver.findElements(By.tagName("a")).size(); i++)
+		{
+			String clickOnLink=Keys.chord(Keys.CONTROL, Keys.ENTER);
+			
+		//	driver.navigate().back(); Instead of this we can use ctrl+click to open it in separate tab and pick title of each page
+			String clickonLink=Keys.chord(Keys.CONTROL, Keys.ENTER);
+			columnDriver.findElements(By.tagName("a")).get(i).sendKeys(clickOnLink);
+			Set<String> window=driver.getWindowHandles();
+			Iterator<String> s = window.iterator();
+			while(s.hasNext())
+			{
+				driver.switchTo().window(s.next());
+				System.out.println(driver.getTitle());
+			}
+		}
+
+
+Ques: What special you did in automation that was appreciated:
+
+-> We have many links where we had to validate by doing which take 5 so you can tell abover example.
+
+
+Ques: A scenario where you have delete session cookie and user gets logged out of secure login and he has to navigate to homePage.
+
+Ans: We will delete that session cookie
+driver.manage().deleteCookieNamed("session");
+
+//Then click on any link
+//Validate if you are login url i.e on homepage
+
+
+Ques: HOw do you handle broken links:
+
+Ans: Check if any link is broken(i.e on clicking any link it should throw error)
+//Broken URL (URL tied upto link and hence that URL doesnt so we say link is broken)
+
+So when we click on inspect and click on network tab and then click on any given link, then you can see the call are made and if it returns success then that means its success.
+If after clicking on link we get response greateer than 400 then its error(broken link).
+
+So java provides us some methods to call the URL and get the status code
+
+First see how to get status code of single link:
+
+String url = driver.findElement(By.cssSelector("[href='https://www.soapui.org/']")).getAttribute("href");
+HttpURLConnection conn=(HttpURLConnection)new URL(url).openConnection();
+Here URL object(new URL()) has the method openConnection and we need class HttpsURLConnection thats why its casted to HttpURLConnection
+
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Shivani\\Documents\\chromedriver.exe\\");
+		WebDriver driver = new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		driver.get("https://www.rahulshettyacademy.com/AutomationPractice/");
+		driver.manage().window().maximize();
+		String url = driver.findElement(By.cssSelector("[href='https://www.soapui.org/']")).getAttribute("href");
+		HttpURLConnection conn=(HttpURLConnection)new URL(url).openConnection();
+		conn.setRequestMethod("HEAD");
+		conn.connect();
+		int responseCode = conn.getResponseCode();
+		System.out.println(responseCode);
+
+
+NOw to check complete webpage
+
+
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Shivani\\Documents\\chromedriver.exe\\");
+		WebDriver driver = new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		driver.get("https://www.rahulshettyacademy.com/AutomationPractice/");
+		driver.manage().window().maximize();
+		List<WebElement> links=driver.findElements(By.cssSelector("li[class='gf-li'] a "));
+		
+		for(WebElement link : links) {
+			
+			String url = link.getAttribute("href");
+			HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+			conn.setRequestMethod("HEAD");
+		    conn.connect();
+		    int responseCode = conn.getResponseCode();
+		    System.out.println(responseCode);
+		    if(responseCode>400)
+		    {
+		    	System.out.println("The link with text:" + link.getText() + " is bronken with rsponse code" + responseCode);
+		    	Assert.assertTrue(false);
+		    }
+		}
+		
+Assertions stops execution when it fails and doesnt continue for other links:
+Thats why soft assertions are used:
+Create object of class SofAssert and use :
+
+
+
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Shivani\\Documents\\chromedriver.exe\\");
+		WebDriver driver = new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		driver.get("https://www.rahulshettyacademy.com/AutomationPractice/");
+		driver.manage().window().maximize();
+		List<WebElement> links=driver.findElements(By.cssSelector("li[class='gf-li'] a "));
+		SoftAssert a = new SoftAssert();
+		
+		for(WebElement link : links) {
+			
+			String url = link.getAttribute("href");
+			HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+			conn.setRequestMethod("HEAD");
+		    conn.connect();
+		    int responseCode = conn.getResponseCode();
+		    System.out.println(responseCode);
+		    a.assertTrue(responseCode<400, "The link with text:" + link.getText() + " is bronken with rsponse code" + responseCode);
+		    
+		}
+		
+		a.assertAll();
+		
+		
+		
+If you dont add a.assertAll(); : Then it will catch all the failures and report and then finalyy fail test case if not added then it will not report failure and cotinue execution
+
+
+
+After execution this is how error is given in output:
+
+
+Exception in thread "main" java.lang.AssertionError: The following asserts failed:
+	The link with text:Broken Link is bronken with rsponse code404 expected [true] but found [false]
