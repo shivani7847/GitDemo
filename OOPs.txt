@@ -1,0 +1,126 @@
+OOPS Concepts:
+
+COding Standards:
+
+Defining private locators and accessing them via public methods
+
+This is what encapsulation is :
+
+When you declare any variable and acess specifier needs to be mentioned i.e public,private,protected and edfault. Whenever a variable is defined as private then it cannot be accessed in another class which extens that class.
+
+So all the data should wrapped up in the methods.
+
+Public methods and private variables.
+
+Declaring methods as public and variable as private is a programming technique and has its own advantage.
+
+4 OOPs Java Principles:
+
+1. Encapsulation
+2. Inheritance
+3. Polymorphism
+4. Abstraction
+
+Encapsulation is the mechanism of hiding of the data implementation by restricting access to public methods. Instance variables are kept private and access methods are kept public to achieve this.
+
+data is variale and its exposed only to public methods of its own class.
+
+Ques: How did you achieve encapsulation in your project
+Ans: By making the data/variables private and make their accessible methods public to hide the data implementation.
+
+
+
+Hard Coded Path:
+
+C:\\new\\fgt
+
+
+If someone has to run this then they wont be having that path
+System.getPropert("user.dir") - It gives path of project. no matter who the useer is
+
+So under:
+
+Property prop = new Property();
+FileInputStream fil = new FileInputStream(System.getProperty("user.dir")+"\\src\\main\\java\\data/properties");
+
+
+Headless Execution:
+
+We dont see browser loading (It is lil fast )
+
+		 
+		 ChromeOptions options = new ChromeOptions();
+		 options.addArguments("headless");
+		 driver = new ChromeDriver(options);
+
+
+********************* How to achieve inheritance in Framework **************
+
+Extends base
+
+
+Inheriting from your parent class to child class.
+
+public class new inherits base
+
+
+Interfaces:
+There are many methods present in an interface. (ItestListener) 
+so this you can explain how you are using inheritance and interface 
+
+WebDriver is an iterfacem
+
+
+Ques: Can driver be static or non-static?
+Ans: What is static?-
+
+If you mark any variable as static then the same variable shared across the project. It doesnot create any new object for same varibale. NO new copy is created.
+If you create for second test case it will overrride but not create any new object. When run in sequential then no overrride.
+
+But when you write in paraller then driver static var will be overriden.
+
+
+So driver can be static when run in sequential. No new memory will be createf for variables(It will be created under heap memory).
+
+When we run our test case sequentially then its best to use static driver var to have less memory on heap space. but in parallel using static you might run into null pointer exception. But even if we have static and define a local var driver into that class then it wont have effect.
+
+
+
+
+
+Inheritance can be defined as the process where one class acquires the properties (methods and fields) of another. With the use of inheritance the information is made manageable in a hierarchical order.
+
+The class which inherits the properties of other is known as subclass (derived class, child class) and the class whose properties are inherited is known as superclass (base class, parent class).
+
+extends Keyword
+extends is the keyword used to inherit the properties of a class. Following is the syntax of extends keyword.
+
+Syntax
+
+class Super {
+   .....
+   .....
+}
+class Sub extends Super {
+   .....
+   .....
+}
+
+
+
+
+An interface in Java is a blueprint of a class. It has static constants and abstract methods.
+
+The interface in Java is a mechanism to achieve abstraction. There can be only abstract methods in the Java interface, not method body. It is used to achieve abstraction and multiple inheritance in Java.
+
+In other words, you can say that interfaces can have abstract methods and variables. It cannot have a method body.
+
+
+
+
+Consolidating Test cases:
+
+
+1. When we many cases that is under same page then we can you 1 class file to write all tests under same page/module.
+2. 
+
